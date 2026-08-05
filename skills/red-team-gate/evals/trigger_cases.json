@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "recommended_threshold": 0.34,
+  "description_required_concepts": [
+    "artifact",
+    "challenge",
+    "prebuild"
+  ],
+  "positive_concepts": {
+    "artifact": [
+      "spec",
+      "specification",
+      "architecture",
+      "implementation plan",
+      "design decision",
+      "产品规格",
+      "技术规格",
+      "架构",
+      "实施计划",
+      "设计决策",
+      "方案"
+    ],
+    "challenge": [
+      "red-team",
+      "red team",
+      "challenge",
+      "fatal flaw",
+      "红队",
+      "挑战",
+      "致命问题",
+      "阻断问题",
+      "检查"
+    ],
+    "prebuild": [
+      "before implementation",
+      "before coding",
+      "pre-build",
+      "开发前",
+      "实施前",
+      "开工前"
+    ],
+    "gate": [
+      "ready to build",
+      "build or revise",
+      "start-or-revise",
+      "能不能开发",
+      "是否开工",
+      "直接开工",
+      "立即开发",
+      "修改后开发"
+    ]
+  },
+  "negative_patterns": [
+    "penetration test",
+    "不要进行红队审查"
+  ],
+  "should_trigger": [
+    {
+      "family": "product_spec",
+      "text": "开发前帮我红队一下这份产品规格，找出阻断开工的问题"
+    },
+    {
+      "family": "architecture",
+      "text": "Challenge this architecture for fatal flaws before implementation and decide whether it is ready to build."
+    },
+    {
+      "family": "implementation_plan",
+      "text": "这个实施计划在开工前有没有致命问题，应该立即开发还是修改后开发？"
+    },
+    {
+      "family": "settled_decision",
+      "text": "Red-team this settled design decision before coding; do not reopen harmless tradeoffs."
+    },
+    {
+      "family": "missing_acceptance_criteria",
+      "text": "这份 AI 写的规格没有可验证的验收标准，开发前检查是否能直接开工。"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "family": "security_penetration_test",
+      "text": "对已经上线的支付 API 做一次 red-team penetration test，找漏洞并利用。"
+    },
+    {
+      "family": "code_review",
+      "text": "审查这个 PR 的代码 diff 和测试失败。"
+    },
+    {
+      "family": "rewrite_only",
+      "text": "把这份产品规格改写得更清楚，不要进行红队审查。"
+    },
+    {
+      "family": "brainstorming",
+      "text": "头脑风暴三个全新的产品架构方案。"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "family": "full_engineering_review",
+      "text": "对这个技术方案做完整工程评审，补齐测试矩阵和性能设计。"
+    },
+    {
+      "family": "decision_coaching",
+      "text": "这个重大设计决策应该选哪个方向？"
+    },
+    {
+      "family": "postmortem",
+      "text": "上线后复盘这次架构方案为什么失败。"
+    }
+  ]
+}

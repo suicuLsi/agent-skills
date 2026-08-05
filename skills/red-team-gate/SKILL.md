@@ -1,6 +1,6 @@
 ---
 name: red-team-gate
-description: Run one bounded, risk-scaled red-team pass on a product or technical specification immediately before implementation. Use when the user has a proposed or settled spec, architecture, implementation plan, or major design decision and asks to red-team it, challenge it, find fatal flaws, decide whether it is ready to build, or avoid analysis paralysis. Separate credible blockers from accepted debt and end with a clear start-or-revise gate.
+description: Run one bounded, risk-scaled red-team pass on a product or technical specification immediately before implementation. Use when the user has a proposed or settled spec, architecture, implementation plan, or major design decision and asks to red-team it, challenge it, find fatal flaws, decide whether it is ready to build, or avoid analysis paralysis. Separate credible blockers from accepted debt and end with a clear start-or-revise gate. Do not use for penetration testing of deployed systems, post-implementation code or diff review, open-ended product discovery, or brainstorming.
 ---
 
 # Red Team Gate
@@ -26,6 +26,8 @@ Extract, without turning this into a new discovery exercise:
 - hard constraints and already-settled choices;
 - relevant evidence, assumptions, and unknowns;
 - irreversible or expensive commitments.
+
+Do not silently invent a missing core outcome or acceptance criterion. Ask only when one answer can make it testable. If the first implementation slice otherwise cannot prove the core outcome, admit a blocker whose minimum fix is one observable acceptance criterion and its verification.
 
 If the specification maps to an existing product or repository, inspect the relevant implementation and dependencies before judging fit. Keep verified facts, inferences, and unknowns distinct.
 

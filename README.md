@@ -33,6 +33,7 @@ Then ask your agent to red-team a settled specification, architecture, implement
 ## Validation boundary
 
 - The skill follows the `SKILL.md` directory format and has no scripts, dependencies, network access, or bundled private context.
+- Routing regression cases cover intended triggers, explicit exclusions, and near-neighbor workflows in [`evals/trigger_cases.json`](skills/red-team-gate/evals/trigger_cases.json).
 - Structural validation does not prove review accuracy. Treat this release as experimental until it has been forward-tested on several real specifications.
 
 ## License
