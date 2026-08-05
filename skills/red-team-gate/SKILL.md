@@ -1,6 +1,6 @@
 ---
 name: red-team-gate
-description: Run one bounded red-team pass on a product or technical specification immediately before implementation. Use when the user has a proposed or settled spec, architecture, implementation plan, or major design decision and asks to red-team it, challenge it, find fatal flaws, decide whether it is ready to build, or avoid analysis paralysis. Separate credible blockers from accepted debt and end with a clear start-or-revise gate.
+description: Run one bounded, risk-scaled red-team pass on a product or technical specification immediately before implementation. Use when the user has a proposed or settled spec, architecture, implementation plan, or major design decision and asks to red-team it, challenge it, find fatal flaws, decide whether it is ready to build, or avoid analysis paralysis. Separate credible blockers from accepted debt and end with a clear start-or-revise gate.
 ---
 
 # Red Team Gate
@@ -10,6 +10,7 @@ Turn pre-build doubt into a decision. Protect the core outcome without reopening
 ## Boundaries
 
 - Run one pass. Do not red-team the red-team.
+- Perform the necessary review in this skill. Do not invoke or require another review skill.
 - Review only; do not edit the spec or code unless the user separately asks.
 - Do not expand scope, optimize for hypothetical scale, or reject a choice merely because alternatives exist.
 - Treat the user's settled requirements and constraints as the contract. Mark contradictions; do not silently replace them.
@@ -33,7 +34,26 @@ Classify the decision:
 - **Two-way door:** cheap to change after learning. Scan only for core-requirement failure, data loss, security, legal/compliance, or an implementation dead end.
 - **One-way door:** expensive or unsafe to reverse. Also inspect migration, external dependency, authority, lock-in, and recovery assumptions at the irreversible boundary.
 
-## 2. Admit Only Credible Blockers
+## 2. Scale the Review to the Risk
+
+Always check the core outcome, acceptance criteria, constraints, and implementation feasibility. Deepen the same review when the decision includes any of these conditions:
+
+- an irreversible migration, destructive change, expensive lock-in, or difficult rollback;
+- payments, authorization, sensitive data, security, or legal/compliance exposure;
+- multi-stage asynchronous work or external systems where retries, duplication, or partial failure affect the core outcome;
+- a core assumption that the first implementation slice cannot verify.
+
+For the triggered areas, inspect only what is relevant:
+
+- architecture boundaries and reuse of existing code;
+- data flow, state transitions, partial failure, recovery, and rollback;
+- trust boundaries, authority, and ownership;
+- verification of critical paths, including observable failure behavior;
+- performance or capacity only when it can defeat a core acceptance criterion or force an expensive commitment.
+
+Do not turn this into a completeness audit. A missing detail is not automatically a blocker; apply the admission test below.
+
+## 3. Admit Only Credible Blockers
 
 A concern is a blocker only when all are true:
 
@@ -44,7 +64,11 @@ A concern is a blocker only when all are true:
 
 If any condition fails, classify it as a known issue only when it deserves an explicit revisit trigger; otherwise omit it. Never manufacture blockers to fill a quota.
 
-Report at most three blockers. For each, state:
+Report every distinct blocker that passes the test. Do not impose an arbitrary count limit. Merge symptoms that share one root cause, order blockers by severity and dependency, and never truncate a credible blocker merely to keep the report short.
+
+Ask a question only when the answer can change the verdict or the minimum fix. Otherwise, mark the point as a verified fact, inference, or unresolved unknown and continue.
+
+For each blocker, state:
 
 - failure and trigger;
 - supporting fact, inference, or unresolved unknown;
@@ -52,14 +76,14 @@ Report at most three blockers. For each, state:
 - smallest change that removes the blocker;
 - one check that proves it is resolved.
 
-## 3. Stop and Decide
+## 4. Stop and Decide
 
 Return exactly one verdict:
 
 - **Build now:** no credible blocker remains. Imperfection and known issues do not prevent the first vertical slice.
 - **Revise, then build:** one or more credible blockers remain. Require only the minimal changes and checks listed; do not reopen the whole specification.
 
-Then record at most three known issues. Each must include a concrete revisit trigger such as measured usage, a failed check, a new requirement, or an approaching irreversible commitment. Do not turn speculative concerns into a backlog.
+Then record only decision-relevant known issues. Merge duplicates and give each a concrete revisit trigger such as measured usage, a failed check, a new requirement, or an approaching irreversible commitment. Do not turn speculative concerns into a backlog.
 
 End with the smallest implementation slice and its verification. After the verdict, stop analysis and move to implementation if the user has authorized it.
 
@@ -74,14 +98,14 @@ Write the report in the user's language. Translate headings and verdict labels w
 **Door type:** Two-way | One-way
 **Basis:** Verified facts / key inferences / unresolved unknowns
 
-### Blockers (0–3)
+### Blockers
 - **Problem:** ...
   - Trigger and consequence: ...
   - Basis and likelihood: ...
   - Minimum fix: ...
   - Resolution check: ...
 
-### Accepted known issues (0–3)
+### Accepted known issues
 - ...; reopen only when ...
 
 ### Start now

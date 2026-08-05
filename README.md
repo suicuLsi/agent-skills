@@ -10,7 +10,7 @@ Small, opinionated [Agent Skills](https://agentskills.io/) extracted from real s
 
 ## Why `red-team-gate`
 
-Many review workflows keep generating concerns after the important decision is already clear. `red-team-gate` admits only credible blockers, caps them at three, separates accepted debt from blockers, and ends with a concrete implementation slice.
+Many review workflows keep generating concerns after the important decision is already clear. `red-team-gate` admits only credible blockers, consolidates them by root cause, scales review depth to the actual risk, separates accepted debt from blockers, and ends with a concrete implementation slice.
 
 It is intentionally not a security penetration-testing skill or a multi-agent review pipeline.
 
