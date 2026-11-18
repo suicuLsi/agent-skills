@@ -7,6 +7,7 @@ Small, opinionated [Agent Skills](https://agentskills.io/) extracted from real s
 | Skill | Purpose | Status |
 | --- | --- | --- |
 | [`red-team-gate`](skills/red-team-gate/) | Run one bounded challenge immediately before implementation, then decide whether to build or revise. | Experimental |
+| [`page-task-check`](skills/page-task-check/) | Check whether a user can complete a page task and whether the result survives reload. | Experimental |
 
 ## Why `red-team-gate`
 
@@ -14,27 +15,40 @@ Many review workflows keep generating concerns after the important decision is a
 
 It is intentionally not a security penetration-testing skill or a multi-agent review pipeline.
 
+## Why `page-task-check`
+
+An order can move to a new column and show **Saved** even when the save request fails. `page-task-check` follows one user task from the starting state through the action and reload, then reports the evidence for each result. Use it for page changes involving field comparisons, status transitions, or finding the same item again after navigation. The skill instructions are in Chinese. [Worked example](skills/page-task-check/examples/order-status.md)
+
 ## Install
 
-Clone this repository, then copy the skill directory into your agent's skills folder:
+Clone this repository and use the block for your agent. Set `skill` to `red-team-gate` to install the pre-implementation review.
 
 ```bash
-git clone https://github.com/crustmyo/agent-skills.git
-
-# Codex
-cp -R agent-skills/skills/red-team-gate ~/.codex/skills/
-
-# Claude Code
-cp -R agent-skills/skills/red-team-gate ~/.claude/skills/
+git clone https://github.com/suicuLsi/agent-skills.git
+cd agent-skills
+skill=page-task-check
 ```
 
-Then ask your agent to red-team a settled specification, architecture, implementation plan, or major design decision before implementation.
+**Codex**
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R "skills/$skill" ~/.codex/skills/
+```
+
+**Claude Code**
+
+```bash
+mkdir -p ~/.claude/skills
+cp -R "skills/$skill" ~/.claude/skills/
+```
+
+Start a new session and ask your agent to use `page-task-check` to verify a page task. Include the expected result and any evidence you already have. For `red-team-gate`, ask it to challenge a settled specification or implementation plan before you start building.
 
 ## Validation boundary
 
-- The skill follows the `SKILL.md` directory format and has no scripts, dependencies, network access, or bundled private context.
-- Routing regression cases cover intended triggers, explicit exclusions, and near-neighbor workflows in [`evals/trigger_cases.json`](skills/red-team-gate/evals/trigger_cases.json).
-- Structural validation does not prove review accuracy. Treat this release as experimental until it has been forward-tested on several real specifications.
+- Both skills use the `SKILL.md` directory format and ship without scripts or runtime dependencies. Live page checks depend on the tools and environment provided by the host.
+- `red-team-gate` includes [routing regression cases](skills/red-team-gate/evals/trigger_cases.json). `page-task-check` includes a [fictional walkthrough](skills/page-task-check/examples/order-status.md) that you can give to your agent alongside the skill.
 
 ## License
 
