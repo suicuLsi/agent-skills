@@ -1,0 +1,4 @@
+interface:
+  display_name: "光学对齐"
+  short_description: "结合真实截图、模糊对照与前景测量，修正图标字形和圆角留白的视觉偏移"
+  default_prompt: "使用 $optical-align 检查这个组件的光学对齐，并用真实尺寸的前后截图验证最小修正。"

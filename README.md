@@ -8,6 +8,7 @@ Small, opinionated [Agent Skills](https://agentskills.io/) extracted from real s
 | --- | --- | --- |
 | [`red-team-gate`](skills/red-team-gate/) | Run one bounded challenge immediately before implementation, then decide whether to build or revise. | Experimental |
 | [`page-task-check`](skills/page-task-check/) | Check whether a user can complete a page task and whether the result survives reload. | Experimental |
+| [`optical-align`](skills/optical-align/) | Diagnose off-center icons and uneven visual weight with foreground measurements and before-and-after comparisons. | Experimental |
 
 ## Why `red-team-gate`
 
@@ -21,7 +22,7 @@ An order can move to a new column and show **Saved** even when the save request 
 
 ## Install
 
-Clone this repository and use the block for your agent. Set `skill` to `red-team-gate` to install the pre-implementation review.
+Clone this repository, set `skill` to the directory you want, and use the block for your agent.
 
 ```bash
 git clone https://github.com/suicuLsi/agent-skills.git
@@ -45,10 +46,13 @@ cp -R "skills/$skill" ~/.claude/skills/
 
 Start a new session and ask your agent to use `page-task-check` to verify a page task. Include the expected result and any evidence you already have. For `red-team-gate`, ask it to challenge a settled specification or implementation plan before you start building.
 
+For `optical-align`, ask your agent to check a mark that looks off-center in a control. The analyzer also runs directly from the command line with Python and Pillow. [Setup and before-and-after example](skills/optical-align/README.md)
+
 ## Validation boundary
 
-- Both skills use the `SKILL.md` directory format and ship without scripts or runtime dependencies. Live page checks depend on the tools and environment provided by the host.
+- `red-team-gate` and `page-task-check` ship without runtime dependencies. Live page checks depend on the tools and environment provided by the host.
 - `red-team-gate` includes [routing regression cases](skills/red-team-gate/evals/trigger_cases.json). `page-task-check` includes a [fictional walkthrough](skills/page-task-check/examples/order-status.md) that you can give to your agent alongside the skill.
+- `optical-align` includes an offline analyzer, a repeatable sample, and unit tests. Its measurements describe the visible foreground. Check the actual control to decide whether a change improves alignment.
 
 ## License
 
